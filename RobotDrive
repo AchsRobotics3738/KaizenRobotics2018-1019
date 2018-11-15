@@ -18,6 +18,7 @@ public class Test extends OpMode
     private DcMotor BR = null;
     private DcMotor FL = null;
     private DcMotor BL = null;
+    private Servo Base = null;
     
     boolean isHeld;
     /*
@@ -32,12 +33,14 @@ public class Test extends OpMode
         BR  = hardwareMap.get(DcMotor.class, "Back Right");
         FL  = hardwareMap.get(DcMotor.class, "Front Left");
         BL  = hardwareMap.get(DcMotor.class, "Back Left");
+        Base = hardwareMap.get(Servo.class, "Base");
         
         // Set Default Positions
         FR.setDirection(DcMotor.Direction.FORWARD);
         FL.setDirection(DcMotor.Direction.REVERSE);
         BR.setDirection(DcMotor.Direction.FORWARD);
         BL.setDirection(DcMotor.Direction.REVERSE);
+        Base.setPosition(.5);
             
         isHeld = false;
         
@@ -79,6 +82,25 @@ public class Test extends OpMode
         BL.setPower(leftPower);
         FR.setPower(rightPower);
         BR.setPower(rightPower);
+        
+        //Move Servo
+        if(!isHeld)
+        {
+            if(gamepad1.left_trigger > 0) {
+                Base.setPosition(1);
+            }
+            else if(gamepad1.right_trigger > 0) {
+                Base.setPosition(0);
+            }
+            else {
+                Base.setPosition(.5);
+            }
+        }
+        
+        if(gamepad1.right_bumper)
+            isHeld = true;
+        if(gamepad1.left_bumper)
+            isHeld = false;
         
         //ShBasegame time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
