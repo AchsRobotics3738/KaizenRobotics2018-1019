@@ -49,7 +49,7 @@ public class RobotDriveModularized extends OpMode
     @Override
     public void loop() {
         
-        //Get Driver 1 Controller input and control wheels with it
+        //Get joystick input and control wheels with it
         double leftPower = -gamepad1.left_stick_y;
         double rightPower = -gamepad1.right_stick_y ;
         
@@ -61,28 +61,31 @@ public class RobotDriveModularized extends OpMode
         robot.setRightVelocity(rightPower);
         robot.setLeftVelocity(leftPower);
         
-        //Move Base with Driver 2 left Stick
-        robot.moveServo(robot.getBase(), gamepad2.left_stick_y);
-
-        //Move Arm with Driver 2 right Stick
-        robot.moveServo(robot.getArm(), gamepad2.right_stick_y);
-        
+        //Set Mount Velocity based on dpad
+        //Move Left if Left, Right if Right
+        if(gamepad1.dpad_right)
+            robot.setMountVelocity(-500);
+        else if(gamepad1.dpad_left)
+            robot.setMountVelocity(500);
+        else
+            robot.setMountVelocity(0);
+            
         //Move Claw if it is not held
         if(!isHeld)
         {
-            //if Driver 2 left trigger close, right trigger open, nothing stay
-            if(gamepad2.left_trigger > 0)
-                robot.setServoPosition(robot.getClaw(), 1);
-            else if(gamepad2.right_trigger > 0)
-                robot.setServoPosition(robot.getClaw(), 0);
+            //if left trigger close, right trigger open, nothing stay
+            if(gamepad1.left_trigger > 0)
+                robot.setClawPosition(1);
+            else if(gamepad1.right_trigger > 0)
+                robot.setClawPosition(0);
             else
-                robot.setServoPosition(robot.getClaw(), .5);
+                robot.setClawPosition(.5);
         }
         
-        //Lock and unlock with Driver 2 right bumper and left
-        if(gamepad2.right_bumper)
+        //Lock and unlock with right bumper and left
+        if(gamepad1.right_bumper)
             isHeld = true;
-        if(gamepad2.left_bumper)
+        if(gamepad1.left_bumper)
             isHeld = false;
         
         //Show time and wheel power.
