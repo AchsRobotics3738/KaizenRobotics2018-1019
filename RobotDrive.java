@@ -52,11 +52,7 @@ public class RobotDriveModularized extends OpMode
         //Get joystick input and control wheels with it
         double leftPower = -gamepad1.left_stick_y;
         double rightPower = -gamepad1.right_stick_y ;
-        
-        //Throttle Input
-        leftPower /= 1.5;
-        rightPower /= 1.5;
-        
+
         //Set power of Motors
         robot.setRightVelocity(rightPower);
         robot.setLeftVelocity(leftPower);
@@ -69,24 +65,30 @@ public class RobotDriveModularized extends OpMode
             robot.setMountVelocity(500);
         else
             robot.setMountVelocity(0);
-            
-        //Move Claw if it is not held
+        
+        //Do not move claw unless it is opening
+        if(isHeld)
+        {
+            //if left trigger close
+            if(gamepad1.left_trigger)
+            {
+                robot.setClawPosition(1);
+                isHeld = false;
+            }
+        }
+
+        //Move Claw if it is not Closed
         if(!isHeld)
         {
-            //if left trigger close, right trigger open, nothing stay
-            if(gamepad1.left_trigger > 0)
-                robot.setClawPosition(1);
-            else if(gamepad1.right_trigger > 0)
+            //if right trigger close, nothing stay
+            if(gamepad1.right_trigger > 0)
+            {
                 robot.setClawPosition(0);
+                isHeld = true;
+            }
             else
                 robot.setClawPosition(.5);
         }
-        
-        //Lock and unlock with right bumper and left
-        if(gamepad1.right_bumper)
-            isHeld = true;
-        if(gamepad1.left_bumper)
-            isHeld = false;
         
         //Show time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
