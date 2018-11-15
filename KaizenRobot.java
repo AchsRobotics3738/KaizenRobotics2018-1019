@@ -13,10 +13,9 @@ public class KaizenRobot
   private DcMotor FL;
   private DcMotor BR;
   private DcMotor BL;
+  private DcMotor Mount;
   
   private Servo Claw;
-  private Servo Arm;
-  private Servo Base;
   
   public KaizenRobot(HardwareMap hardwareMap)
   {
@@ -25,30 +24,21 @@ public class KaizenRobot
     BR  = hardwareMap.get(DcMotor.class, "Back Right");
     FL  = hardwareMap.get(DcMotor.class, "Front Left");
     BL  = hardwareMap.get(DcMotor.class, "Back Left");
-
-    //Initalize the Servos
+    Mount = hardwareMap.get(DcMotor.class, "Mount");
+    
+    //Initalize the Servo
     Claw = hardwareMap.get(Servo.class, "Claw");
-    Arm = hardwareMap.get(Servo.class, "Arm");
-    Base = hardwareMap.get(Servo.class, "Base");
       
     // Set Default Positions of motors
     FR.setDirection(DcMotor.Direction.FORWARD);
     FL.setDirection(DcMotor.Direction.REVERSE);
     BR.setDirection(DcMotor.Direction.FORWARD);
     BL.setDirection(DcMotor.Direction.REVERSE);
+    Mount.setDirection(DcMotor.Direction.FORWARD);
     
-    // Set Default Positions of servos
+    // Set Default Positions of the servo
     Claw.setPosition(.5);
-    Arm.setPosition(.5);
-    Base.setPosition(.5);
   }
-  
-  //Methods that Return their respective servo motors from the robot
-  public Servo getClaw() { return Claw; }
-  
-  public Servo getArm() { return Arm; }
-  
-  public Servo getBase() { return Base; }
   
   /*Set the right wheels to an input velocity from a joystick
   * Forward if positive
@@ -67,28 +57,19 @@ public class KaizenRobot
     BL.setPower(velocity);
   }
   
-  /*Move a selected servo based on a passed position as a float
-  * Close if position > 0
-  * Open if position < 0
-  * Keep if position = 0
-  */
-  public void moveServo(Servo servo, double position)
+  //Set the mount velocity to an input velocity
+  public void setMountVelocity(double velocity)
   {
-    if(position > 0)
-            servo.setPosition(1);
-        else if(position < 0)
-            servo.setPosition(0);
-        else
-            servo.setPosition(.5);
+    Mount.setPower(velocity);
   }
   
-  /* Set the servo position based on a double position
+  /* Set the claw position based on a double position
   *  1 is 180 degrees
   *  0 is 0 degrees
   *  .5 is 90 degrees
   */
-  public void setServoPosition(Servo servo, double position)
+  public void setClawPosition(double position)
   {
-    servo.setPosition(position);
+    Claw.setPosition(position);
   }
 }
