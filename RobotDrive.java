@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Robot Drive", group="Iterative Opmode")
-public class RobotDriveModularized extends OpMode
+public class RobotDrive extends OpMode
 {
     private ElapsedTime runtime = new ElapsedTime();
     public KaizenRobot robot = null;
@@ -49,27 +49,23 @@ public class RobotDriveModularized extends OpMode
     @Override
     public void loop() {
         
-        //Get joystick input and control wheels with it
-        double leftPower = -gamepad1.left_stick_y;
-        double rightPower = -gamepad1.right_stick_y;
-
-        //Set power of Motors
-        robot.setRightVelocity(rightPower);
-        robot.setLeftVelocity(leftPower);
+        //Set power of Motors with joysticks
+        robot.setRightVelocity(-gamepad1.right_stick_y);
+        robot.setLeftVelocity(-gamepad1.left_stick_y);
         
         //Turn the Robot to the side if dpad is pressed
         //Turn Left if Left, Right if Right
         if(gamepad1.dpad_right)
-            robot.turn(500, true);
-        else(gamepad1.dpad_left)
-            robot.turn(500, false);
+            robot.turn(500);
+        else if(gamepad1.dpad_left)
+            robot.turn(-500);
         
         //Hold Claw until it is oppened with the right trigger
         //Move Claw if it is not Closed
         if(isHeld)
         {
             //if right trigger, open
-            if(gamepad1.right_trigger)
+            if(gamepad1.right_trigger > 0)
             {
                 robot.setClawPosition(1);
                 isHeld = false;
@@ -78,7 +74,7 @@ public class RobotDriveModularized extends OpMode
         else
         {
             //if left trigger close, nothing stay
-            if(gamepad1.left_trigger)
+            if(gamepad1.left_trigger > 0)
             {
                 robot.setClawPosition(0);
                 isHeld = true;
@@ -90,16 +86,16 @@ public class RobotDriveModularized extends OpMode
         //Move base of claw on player input
         //Down with X, up with Y
         if(gamepad1.y)
-            robot.moveBase(500);
+            robot.setBaseVelocity(500.0);
         else if(gamepad1.x)
-            robot.moveBase(-500);
+            robot.setBaseVelocity(-500.0);
         
         //Move joint of claw on player dPad input
         //Down with down Up with up
         if(gamepad1.dpad_up)
-            robot.moveJoint(500);
+            robot.setJointVelocity(500.0);
         else if(gamepad1.dpad_down)
-            robot.moveJoint(-500);
+            robot.setJointVelocity(-500.0);
             
         //Show time elapsed and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
