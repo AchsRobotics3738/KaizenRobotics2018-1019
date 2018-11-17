@@ -51,37 +51,34 @@ public class RobotDriveModularized extends OpMode
         
         //Get joystick input and control wheels with it
         double leftPower = -gamepad1.left_stick_y;
-        double rightPower = -gamepad1.right_stick_y ;
+        double rightPower = -gamepad1.right_stick_y;
 
         //Set power of Motors
         robot.setRightVelocity(rightPower);
         robot.setLeftVelocity(leftPower);
         
-        //Set Mount Velocity based on dpad
-        //Move Left if Left, Right if Right
+        //Turn the Robot to the side if dpad is pressed
+        //Turn Left if Left, Right if Right
         if(gamepad1.dpad_right)
-            robot.setMountVelocity(-500);
-        else if(gamepad1.dpad_left)
-            robot.setMountVelocity(500);
-        else
-            robot.setMountVelocity(0);
+            robot.turn(500, true);
+        else(gamepad1.dpad_left)
+            robot.turn(500, false);
         
-        //Do not move claw unless it is opening
+        //Hold Claw until it is oppened with the right trigger
+        //Move Claw if it is not Closed
         if(isHeld)
         {
-            //if left trigger close
-            if(gamepad1.left_trigger)
+            //if right trigger, open
+            if(gamepad1.right_trigger)
             {
                 robot.setClawPosition(1);
                 isHeld = false;
             }
         }
-
-        //Move Claw if it is not Closed
-        if(!isHeld)
+        else
         {
-            //if right trigger close, nothing stay
-            if(gamepad1.right_trigger > 0)
+            //if left trigger close, nothing stay
+            if(gamepad1.left_trigger)
             {
                 robot.setClawPosition(0);
                 isHeld = true;
@@ -90,9 +87,22 @@ public class RobotDriveModularized extends OpMode
                 robot.setClawPosition(.5);
         }
         
-        //Show time and wheel power.
+        //Move base of claw on player input
+        //Down with X, up with Y
+        if(gamepad1.y)
+            robot.moveBase(500);
+        else if(gamepad1.x)
+            robot.moveBase(-500);
+        
+        //Move joint of claw on player dPad input
+        //Down with down Up with up
+        if(gamepad1.dpad_up)
+            robot.moveJoint(500);
+        else if(gamepad1.dpad_down)
+            robot.moveJoint(-500);
+            
+        //Show time elapsed and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
     }
 
         
