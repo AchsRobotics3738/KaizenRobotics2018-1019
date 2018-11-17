@@ -8,7 +8,7 @@ public class KaizenRobot
 {
   private DcMotor right;
   private DcMotor left;
-  private DcMotor mount;
+  private DcMotor base;
   private DcMotor joint;
   
   private Servo claw;
@@ -18,7 +18,7 @@ public class KaizenRobot
      // Initialize the DCMotors
     right  = hardwareMap.get(DcMotor.class, "Right");
     left  = hardwareMap.get(DcMotor.class, "Left");
-    mount = hardwareMap.get(DcMotor.class, "Mount");
+    base = hardwareMap.get(DcMotor.class, "Base");
     joint = hardwareMap.get(DcMotor.class, "Joint");
 
     //Initalize the Servo
@@ -27,8 +27,8 @@ public class KaizenRobot
     // Set Default Positions of motors
     right.setDirection(DcMotor.Direction.FORWARD);
     left.setDirection(DcMotor.Direction.REVERSE);
-    mount.setDirection(DcMotor.Direction.FORWARD);
-    join.setDirection(DcMotor.Direction.FORWARD);
+    base.setDirection(DcMotor.Direction.FORWARD);
+    joint.setDirection(DcMotor.Direction.FORWARD);
 
     // Set Default Positions of the servo
     claw.setPosition(.5);
@@ -50,18 +50,10 @@ public class KaizenRobot
   }
   
   //Turn the robot in place by having one motor move forward and the other back
-  public void turn(double velocity, boolean isRight)
+  public void turn(double velocity)
   {
-    if(ifRight)
-    {
       setRightVelocity(-velocity);
       setLeftVelocity(velocity);
-    }
-    else
-    {
-      setRightVelocity(velocity);
-      setLeftVelocity(-velocity);
-    }
   }
 
   //Set the joint velocity to an input velocity
@@ -70,10 +62,10 @@ public class KaizenRobot
     joint.setPower(velocity);
   }
 
-  //Set the mount velocity to an input velocity
-  public void setMountVelocity(double velocity)
+  //Set the base velocity to an input velocity
+  public void setBaseVelocity(double velocity)
   {
-    mount.setPower(velocity);
+    base.setPower(velocity);
   }
   
   /* Set the claw position based on a double position
@@ -87,14 +79,14 @@ public class KaizenRobot
   }
 
   //Move the bot foreward a sent in amount of rotations
-  public void moveForeward(int rotations)
+  /*public void moveForeward(int rotations)
   {
 
-  }
+  }*/
 
   //Turn the robot a sent in angle
-  public void turn(int angle)
+  /*public void turn(int angle)
   {
 
-  }
+  }*/
 }
