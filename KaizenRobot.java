@@ -25,8 +25,8 @@ public class KaizenRobot
     claw = hardwareMap.get(Servo.class, "Claw");
       
     // Set Default Positions of motors
-    right.setDirection(DcMotor.Direction.FORWARD);
-    left.setDirection(DcMotor.Direction.REVERSE);
+    right.setDirection(DcMotor.Direction.REVERSE);
+    left.setDirection(DcMotor.Direction.FORWARD);
     base.setDirection(DcMotor.Direction.FORWARD);
     joint.setDirection(DcMotor.Direction.FORWARD);
 
