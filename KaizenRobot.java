@@ -12,6 +12,7 @@ public class KaizenRobot
   private DcMotor right;
   private DcMotor left;
   private DcMotor mount;
+  private DcMotor joint;
   
   private Servo claw;
   
@@ -21,7 +22,8 @@ public class KaizenRobot
     right  = hardwareMap.get(DcMotor.class, "Right");
     left  = hardwareMap.get(DcMotor.class, "Left");
     mount = hardwareMap.get(DcMotor.class, "Mount");
-    
+    joint = hardwareMap.get(DcMotor.class, "Joint");
+
     //Initalize the Servo
     claw = hardwareMap.get(Servo.class, "Claw");
       
@@ -29,11 +31,12 @@ public class KaizenRobot
     right.setDirection(DcMotor.Direction.FORWARD);
     left.setDirection(DcMotor.Direction.REVERSE);
     mount.setDirection(DcMotor.Direction.FORWARD);
-    
+    join.setDirection(DcMotor.Direction.FORWARD);
+
     // Set Default Positions of the servo
     claw.setPosition(.5);
   }
-  
+
   /*Set the right wheels to an input velocity from a joystick
   * Forward if positive
   * Reverse if negative
@@ -49,6 +52,27 @@ public class KaizenRobot
     left.setPower(velocity);
   }
   
+  //Turn the robot in place by having one motor move forward and the other back
+  public void turn(double velocity, boolean isRight)
+  {
+    if(ifRight)
+    {
+      setRightVelocity(-velocity);
+      setLeftVelocity(velocity);
+    }
+    else
+    {
+      setRightVelocity(velocity);
+      setLeftVelocity(-velocity);
+    }
+  }
+
+  //Set the joint velocity to an input velocity
+  public void setJointVelocity(double velocity)
+  {
+    joint.setPower(velocity);
+  }
+
   //Set the mount velocity to an input velocity
   public void setMountVelocity(double velocity)
   {
@@ -63,5 +87,17 @@ public class KaizenRobot
   public void setClawPosition(double position)
   {
     claw.setPosition(position);
+  }
+
+  //Move the bot foreward a sent in amount of rotations
+  public void moveForeward(int rotations)
+  {
+
+  }
+
+  //Turn the robot a sent in angle
+  public void turn(int angle)
+  {
+
   }
 }
