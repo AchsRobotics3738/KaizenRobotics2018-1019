@@ -69,19 +69,19 @@ public class RobotDrive extends OpMode
         //Move Claw if it is not Closed
         if(isHeld)
         {
-            //if right trigger, open
-            if(gamepad1.right_trigger > 0)
+            //if left trigger open
+            if(gamepad1.left_trigger > 0)
             {
-                robot.setClawPosition(1);
+                robot.setClawPosition(0);
                 isHeld = false;
             }
         }
         else
         {
-            //if left trigger close, nothing stay
-            if(gamepad1.left_trigger > 0)
+            //if right trigger close, nothing stay
+            if(gamepad1.right_trigger > 0)
             {
-                robot.setClawPosition(0);
+                robot.setClawPosition(1);
                 isHeld = true;
             }
             else
@@ -106,7 +106,7 @@ public class RobotDrive extends OpMode
         else
             robot.setJointVelocity(0.0);
             
-        //Show time elapsed and wheel power.
+        //Show time elapsed
         telemetry.addData("Status", "Run Time: " + runtime.toString());
     }
 
