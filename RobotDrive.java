@@ -50,13 +50,23 @@ public class RobotDrive extends OpMode
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
-    public void loop() {
-        
+    public void loop() 
+    {
+        wheelMovement();
+        clawMovement();       
+        armMovement();
+            
+        //Show time elapsed
+        telemetry.addData("Status", "Run Time: " + runtime.toString());
+    }
+
+    public void wheelMovement()
+    {
         //Set power of Motors with joysticks
         robot.setRightVelocity(-gamepad1.right_stick_y);
-        robot.setLeftVelocity(-gamepad1.left_stick_y);
-        
-        //Turn the Robot to the side if dpad is pressed
+        robot.setLeftVelocity(-gamepad1.left_stick_y); 
+    
+       //Turn the Robot to the side if dpad is pressed
         //Turn Left if Left, Right if Right
         if(gamepad1.dpad_right)
             robot.turn(50.0);
@@ -64,7 +74,10 @@ public class RobotDrive extends OpMode
             robot.turn(-50.0);
         else
             robot.turn(0.0);
-       
+    }
+    
+    public void clawMovement()
+    {
         //if left trigger open
         if(gamepad1.left_trigger > 0)
         {
@@ -84,6 +97,10 @@ public class RobotDrive extends OpMode
         else
             robot.setClawPosition(.5);
         
+    }
+    
+    public void armMovement()
+    {
         //Move base of claw on player input
         //Down with X, up with Y
         if(gamepad1.y)
@@ -101,14 +118,11 @@ public class RobotDrive extends OpMode
             robot.setJointVelocity(-1.0); //Modify to make more or less powerful based on need- Down on Dpad
         else
             robot.setJointVelocity(0.0);
-            
-        //Show time elapsed
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-    }
-
         
+    }
+    
     @Override
     public void stop() {
     }
 
-} 
+}
