@@ -11,7 +11,6 @@ public class KaizenRobot
   private DcMotor br;
   private DcMotor bl;
   private DcMotor base;
-  private DcMotor joint;
   
   private Servo claw;
   
@@ -23,7 +22,6 @@ public class KaizenRobot
     br  = hardwareMap.get(DcMotor.class, "Back Right");
     bl  = hardwareMap.get(DcMotor.class, "Back Left");
     base = hardwareMap.get(DcMotor.class, "Base");
-    joint = hardwareMap.get(DcMotor.class, "Joint");
 
     //Initalize the Servo
     claw = hardwareMap.get(Servo.class, "Claw");
@@ -34,7 +32,6 @@ public class KaizenRobot
     br.setDirection(DcMotor.Direction.REVERSE);
     bl.setDirection(DcMotor.Direction.FORWARD);
     base.setDirection(DcMotor.Direction.FORWARD);
-    joint.setDirection(DcMotor.Direction.FORWARD);
 
     // Set Default Positions of the servo
     claw.setPosition(.5);
@@ -63,13 +60,7 @@ public class KaizenRobot
       setRightVelocity(-velocity);
       setLeftVelocity(velocity);
   }
-
-  //Set the joint velocity to an input velocity
-  public void setJointVelocity(double velocity)
-  {
-    joint.setPower(velocity);
-  }
-
+  
   //Set the base velocity to an input velocity
   public void setBaseVelocity(double velocity)
   {
@@ -85,16 +76,4 @@ public class KaizenRobot
   {
     claw.setPosition(position);
   }
-
-  //Move the bot foreward a sent in amount of rotations
-  /*public void moveForeward(int rotations)
-  {
-
-  }*/
-
-  //Turn the robot a sent in angle
-  /*public void turn(int angle)
-  {
-
-  }*/
 }
