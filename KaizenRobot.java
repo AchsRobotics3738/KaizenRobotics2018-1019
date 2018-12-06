@@ -6,8 +6,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class KaizenRobot
 {
-  private DcMotor right;
-  private DcMotor left;
+  private DcMotor fr;
+  private DcMotor fl;
+  private DcMotor br;
+  private DcMotor bl;
   private DcMotor base;
   private DcMotor joint;
   
@@ -16,8 +18,10 @@ public class KaizenRobot
   public KaizenRobot(HardwareMap hardwareMap)
   {
      // Initialize the DCMotors
-    right  = hardwareMap.get(DcMotor.class, "Right");
-    left  = hardwareMap.get(DcMotor.class, "Left");
+    fr  = hardwareMap.get(DcMotor.class, "Front Right");
+    fl  = hardwareMap.get(DcMotor.class, "Front Left");
+    br  = hardwareMap.get(DcMotor.class, "Back Right");
+    bl  = hardwareMap.get(DcMotor.class, "Back Left");
     base = hardwareMap.get(DcMotor.class, "Base");
     joint = hardwareMap.get(DcMotor.class, "Joint");
 
@@ -25,8 +29,10 @@ public class KaizenRobot
     claw = hardwareMap.get(Servo.class, "Claw");
       
     // Set Default Positions of motors
-    right.setDirection(DcMotor.Direction.REVERSE);
-    left.setDirection(DcMotor.Direction.FORWARD);
+    fr.setDirection(DcMotor.Direction.REVERSE);
+    fl.setDirection(DcMotor.Direction.FORWARD);
+    br.setDirection(DcMotor.Direction.REVERSE);
+    bl.setDirection(DcMotor.Direction.FORWARD);
     base.setDirection(DcMotor.Direction.FORWARD);
     joint.setDirection(DcMotor.Direction.FORWARD);
 
@@ -40,13 +46,15 @@ public class KaizenRobot
   */
   public void setRightVelocity(double velocity)
   {
-    right.setPower(velocity);
+    fr.setPower(velocity);
+    br.setPower(velocity);
   }
   
   //Set the left wheels to an input velocity from a joystick
   public void setLeftVelocity(double velocity)
   {
-    left.setPower(velocity);
+    fl.setPower(velocity);
+    bl.setPower(velocity);
   }
   
   //Turn the robot in place by having one motor move forward and the other back
