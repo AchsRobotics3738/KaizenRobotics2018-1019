@@ -109,15 +109,6 @@ public class RobotDrive extends OpMode
             robot.setBaseVelocity(-.1); //Change this to be more or less powerful based on need
         else
             robot.setBaseVelocity(0.0);
-            
-        //Move joint of claw on player dPad input
-        //Down with down Up with up
-        if(gamepad1.dpad_up)
-            robot.setJointVelocity(.1);
-        else if(gamepad1.dpad_down)
-            robot.setJointVelocity(-1.0); //Modify to make more or less powerful based on need- Down on Dpad
-        else
-            robot.setJointVelocity(0.0);
         
     }
     
