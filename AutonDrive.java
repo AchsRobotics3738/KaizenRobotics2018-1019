@@ -20,11 +20,13 @@ public class AutonDrive extends LinearOpMode
     {
         //Create Robot
         robot = new KaizenRobot(hardwareMap);
+        robot.startEncoders();
         robot.setRunUsingEncoder();
 
     //Wait for driver to hit play
         waitForStart();
     
+    //Move Claw Forward
     runtime.reset();
     while(runtime.seconds() < 1.75){robot.setBaseVelocity(20);}
     robot.setBaseVelocity(0);
@@ -32,7 +34,12 @@ public class AutonDrive extends LinearOpMode
     telemetry.addData("Status", "Running");
     
     //Move 12 inches forward over 5 seconds
-        moveByValue(.6, 25, 25, 5.0);
+        moveByValue(.6, 35, 35, 5.0);
+    
+    //Move Claw Backward    
+    runtime.reset();
+    while(runtime.seconds() < 1.67){robot.setBaseVelocity(-20);}
+    robot.setBaseVelocity(0);
     }
     
     //Method to make the robot move by a designated number of inches.
@@ -48,7 +55,7 @@ public class AutonDrive extends LinearOpMode
             runtime.reset();
             
             //multiply left by .5 to account for uneven weight
-            robot.setLeftVelocity(speed * 2);
+            robot.setLeftVelocity(speed);
             robot.setRightVelocity(speed);
         
         /*Ensure three things to run the code
