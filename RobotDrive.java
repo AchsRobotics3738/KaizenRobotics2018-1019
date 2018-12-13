@@ -53,17 +53,19 @@ public class RobotDrive extends OpMode
     public void loop() 
     {
         //Set power of Motors with joysticks
-        robot.setRightVelocity(-gamepad1.right_stick_y);
-        robot.setLeftVelocity(-gamepad1.left_stick_y); 
+        robot.setRightVelocity(-gamepad1.right_stick_y * 0.5);
+        robot.setLeftVelocity(-gamepad1.left_stick_y * 0.5); 
                
         //Turn the Robot to the side if dpad is pressed
         //Turn Left if Left, Right if Right
+        /*
         if(gamepad1.dpad_right)
             robot.turn(50.0);
         else if(gamepad1.dpad_left)
             robot.turn(-50.0);
         else
             robot.turn(0.0);
+        */
         //Show time elapsed
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         
@@ -89,9 +91,9 @@ public class RobotDrive extends OpMode
         //Move base of claw on player input
         //Down with X, up with Y
         if(gamepad1.y)
-            robot.setBaseVelocity(.1); //Change this to be more or less powerful based on need
+            robot.setBaseVelocity(.2); //Change this to be more or less powerful based on need
         else if(gamepad1.x)
-            robot.setBaseVelocity(-.1); //Change this to be more or less powerful based on need
+            robot.setBaseVelocity(-.2); //Change this to be more or less powerful based on need
         else
             robot.setBaseVelocity(0.0);
     }
