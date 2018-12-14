@@ -19,7 +19,15 @@ public class RobotDrive extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     public KaizenRobot robot = null;
     
+    //handles claw logic
     boolean isHeld;
+    
+    //handles toggle of wheel speed
+    boolean isFast = true;
+    double wheelSpeed = 0.6;
+    static double fastSpeed = 0.6;
+    static double slowSpeed = 0.15;
+    
     /*
      * Code to run ONCE when the driver hits INIT
      */
@@ -53,9 +61,14 @@ public class RobotDrive extends OpMode
     public void loop() 
     {
         //Set power of Motors with joysticks
-        robot.setRightVelocity(-gamepad1.right_stick_y * 0.5);
-        robot.setLeftVelocity(-gamepad1.left_stick_y * 0.5); 
-               
+        if(gamepad1.right_stick_y > 0.1 || gamepad1.right_stick_y < -0.1)
+            robot.setRightVelocity(-gamepad1.right_stick_y * wheelSpeed);
+        else
+            robot.setRightVelocity(0);
+        if(gamepad1.left_stick_y > 0.1 ||gamepad1.left_stick_y < -0.1)
+            robot.setLeftVelocity(-gamepad1.left_stick_y * wheelSpeed); 
+        else
+            robot.setLeftVelocity(0);
         //Turn the Robot to the side if dpad is pressed
         //Turn Left if Left, Right if Right
         /*
@@ -96,6 +109,13 @@ public class RobotDrive extends OpMode
             robot.setBaseVelocity(-.2); //Change this to be more or less powerful based on need
         else
             robot.setBaseVelocity(0.0);
+        
+        //handles speed toggle
+        if(gamepad1.right_bumper)
+            wheelSpeed = fastSpeed;
+        else if(gamepad1.left_bumper)
+            wheelSpeed = slowSpeed;
+        
     }
 
     @Override
