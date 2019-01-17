@@ -1,0 +1,121 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.robot.Robot;
+import java.util.Set;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+@Autonomous(name="Comp Auton B", group="Kaizen Robot")
+public class CompAutonB extends LinearOpMode
+{
+    KaizenRobot robot = null;
+    private ElapsedTime runtime = new ElapsedTime();
+
+    @Override
+    public void runOpMode()
+    {
+    //Create Robot
+        robot = new KaizenRobot(hardwareMap);
+        robot.startEncoders();
+        robot.setRunUsingEncoder();
+
+    //Wait for driver to hit play
+        waitForStart();
+    
+		telemetry.addData("Status", "Running");
+	//Closes claw
+		robot.setClawPosition(1);
+	
+	//Back away from lander
+		runtime.reset();
+        moveByValue(.6, -35, -35, 1.0);
+		
+	//Turn Right
+		runtime.reset();
+        moveByValue(.6, 10, -10, 1.0);
+
+	//Drive Straight
+		runtime.reset();
+        moveByValue(.6, 45, 45, 5.0);	
+		
+    //Move Arm Forward
+		runtime.reset();
+		while(runtime.seconds() < 1.75){robot.setBaseVelocity(20);}
+		robot.setBaseVelocity(0);	
+		
+	//Release team marker
+		runtime.reset();
+		while(runtime.seconds() < 0.2){robot.setClawPosition(0);}
+		robot.setClawPosition(0.5);	
+	
+	//Turn Left
+		runtime.reset();
+        moveByValue(.6, 6, -6, 1.0);
+
+	//Drive Backwards
+		runtime.reset();
+        moveByValue(.6, -50, -50, 5.0);
+		
+
+	
+	/*
+    //Move Arm Forward
+		runtime.reset();
+		while(runtime.seconds() < 1.75){robot.setBaseVelocity(20);}
+		robot.setBaseVelocity(0);
+    
+    
+    
+    //Move 12 inches forward over 5 seconds
+		runtime.reset();
+        moveByValue(.6, 35, 35, 5.0);
+    
+    //Move Arm Backward    
+		runtime.reset();
+		while(runtime.seconds() < 1.67){robot.setBaseVelocity(-20);}
+		robot.setBaseVelocity(0);
+	*/
+	
+	
+    }
+    
+    //Method to make the robot move by a designated number of inches.
+    public void moveByValue(double speed, double lInch, double rInch, double duration)
+    {
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
+            robot.setLeftTargetDistance(lInch);
+            robot.setRightTargetDistance(rInch);
+            robot.setRunToPosition();
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            
+            //multiply left by .5 to account for uneven weight
+            robot.setLeftVelocity(speed);
+            robot.setRightVelocity(speed);
+        
+        /*Ensure three things to run the code
+            1.) the opmode is running
+        2.) the time is under the duration
+        3.) the robot is still running the opmode
+        */
+            while (opModeIsActive() && (runtime.seconds() < duration) && robot.getIsBusy()) {
+
+                telemetry.addData("Inch Amount", "Left: %d, Right: %d");
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            robot.setLeftVelocity(0);
+            robot.setRightVelocity(0);
+        
+         //Reset Encoders for next step
+            robot.setRunUsingEncoder();
+        }
+    }
+}
